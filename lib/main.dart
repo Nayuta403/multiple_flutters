@@ -20,9 +20,15 @@ MaterialColor convertNumberToColor(int number) {
 
 int count = 0;
 
-void main() {
+void main() async{
+  // ADD START
+  WidgetsFlutterBinding.ensureInitialized();
+  print('Nayuta main invoker wait for multiple-flutters response');
+  MethodChannel channel = const MethodChannel("multiple-flutters");
+  await channel.invokeMethod("test");
+  print('Nayuta multiple-flutters test invoked');
+  // ADD END
   runApp(MyApp(color: convertNumberToColor(count)));
-  count++;
 }
 
 class MyApp extends StatelessWidget {

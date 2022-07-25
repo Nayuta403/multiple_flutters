@@ -1,6 +1,7 @@
 package dev.flutter.multipleflutters
 
 import android.app.Application
+import io.flutter.Log
 import io.flutter.embedding.engine.FlutterEngineGroup
 
 /**
@@ -13,6 +14,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        engines = FlutterEngineGroup(this, null ,/** sharedIsolateMode */ true)
+        Log.setLogLevel(0)
+        engines = FlutterEngineGroup(this, null)
     }
 }

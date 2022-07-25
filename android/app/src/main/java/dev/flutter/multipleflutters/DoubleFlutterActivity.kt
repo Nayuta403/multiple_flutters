@@ -67,9 +67,6 @@ class DoubleFlutterActivity : FragmentActivity(), EngineBindingsDelegate {
                 )
                 .commit()
         }
-
-        topBindings.attach()
-        bottomBindings.attach()
     }
 
     override fun onDestroy() {

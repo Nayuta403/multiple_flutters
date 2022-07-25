@@ -18,7 +18,6 @@ class SingleFlutterActivity : FlutterActivity(), EngineBindingsDelegate {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        engineBindings.attach()
     }
 
     override fun onDestroy() {

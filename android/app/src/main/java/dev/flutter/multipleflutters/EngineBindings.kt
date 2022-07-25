@@ -1,6 +1,9 @@
 package dev.flutter.multipleflutters
 
 import android.app.Activity
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import io.flutter.FlutterInjector
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.dart.DartExecutor
@@ -29,9 +32,15 @@ interface EngineBindingsDelegate {
  *
  * @see main.dart for what messages are getting sent from Flutter.
  */
-class EngineBindings(activity: Activity, delegate: EngineBindingsDelegate, entrypoint: String, initialRoute: String?, initialArguments: Object?) :
+class EngineBindings(
+    activity: Activity,
+    delegate: EngineBindingsDelegate,
+    entrypoint: String,
+    initialRoute: String?,
+    initialArguments: Object?
+) :
     DataModelObserver {
-    val channel: MethodChannel
+    lateinit var channel: MethodChannel
     val engine: FlutterEngine
     val delegate: EngineBindingsDelegate
 
@@ -43,8 +52,14 @@ class EngineBindings(activity: Activity, delegate: EngineBindingsDelegate, entry
                 FlutterInjector.instance().flutterLoader().findAppBundlePath(), entrypoint
             )
         engine = app.engines.createAndRunEngine(activity, dartEntrypoint, initialRoute);
+//        engine.dartExecutor.binaryMessenger.enableBufferingIncomingMessages()
         this.delegate = delegate
-        channel = MethodChannel(engine.dartExecutor.binaryMessenger, "multiple-flutters")
+        Handler(Looper.getMainLooper()).postDelayed({
+            Log.i("Nayuta", " multiple-flutters channel register ")
+            channel = MethodChannel(engine.dartExecutor.binaryMessenger, "multiple-flutters")
+            attach()
+        }, 100)
+
     }
 
     /**
@@ -61,6 +76,10 @@ class EngineBindings(activity: Activity, delegate: EngineBindingsDelegate, entry
                 }
                 "next" -> {
                     this.delegate.onNext()
+                    result.success(null)
+                }
+                "test" -> {
+                    android.util.Log.i("Nayuta", "multiple-flutters test invoke ")
                     result.success(null)
                 }
                 else -> {
